@@ -3,8 +3,10 @@ package net.skhu.qrcheck;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,15 +25,31 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ScanQRActivity extends AppCompatActivity {
+
+    public static Activity _ScanQRActivity;
     RetrofitService retrofitService;
+    Intent intent;
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_qr);
+
+        UserActivity UA = (UserActivity) UserActivity._UserActivity;
+        UA.finish();
+
+        _ScanQRActivity = ScanQRActivity.this;
+
         retrofitService = new RetrofitService();
         retrofitService.init();
         retrofitService.retrofitAPI = retrofitService.retrofit.create(RetrofitAPI.class);
+
+        intent = getIntent();
+        id = intent.getIntExtra("id", 0);
+        intent = new Intent(this, UserActivity.class);
+        intent.putExtra("id", id);
+
 
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);
         intentIntegrator.setBeepEnabled(false);
@@ -48,8 +66,7 @@ public class ScanQRActivity extends AppCompatActivity {
             } else {
 
                 String[] split = result.getContents().split(" ");
-                Intent intent = getIntent();
-                int id = intent.getIntExtra("id", 0);
+
                 final TextView scanResult = findViewById(R.id.scanResult);
 
                 Toast.makeText(ScanQRActivity.this, split[0] + " " + split[1] + " " + id, Toast.LENGTH_LONG).show();
@@ -95,5 +112,9 @@ public class ScanQRActivity extends AppCompatActivity {
         } else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+    }
+
+    public void onOkClick(View view) {
+        startActivity(intent);
     }
 }
