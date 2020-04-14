@@ -21,6 +21,7 @@ import retrofit2.Response;
 public class UserActivity extends AppCompatActivity {
 
     RetrofitService retrofitService;
+    int id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,9 @@ public class UserActivity extends AppCompatActivity {
         final TextView textView = findViewById(R.id.review);
 
         Intent intent = getIntent();
-        int id = intent.getIntExtra("id", 0);
+        id = intent.getIntExtra("id", 0);
+
+
 
         Call<List<Att>> call = retrofitService.retrofitAPI.studentAttendances(id);
         call.enqueue(new Callback<List<Att>>() {
@@ -55,6 +58,7 @@ public class UserActivity extends AppCompatActivity {
 
     public void onQRClick(View view) {
         Intent intent = new Intent(this, ScanQRActivity.class);
+        intent.putExtra("id", id);
         startActivity(intent);
     }
 }
