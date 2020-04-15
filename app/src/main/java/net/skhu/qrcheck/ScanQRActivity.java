@@ -55,6 +55,9 @@ public class ScanQRActivity extends AppCompatActivity {
         intent.putExtra("name", name);
         intent.putExtra("stuNum", stuNum);
 
+        TextView textView_Info = findViewById(R.id.userInfo);
+        textView_Info.setText(name+"("+stuNum+")");
+
 
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);
         intentIntegrator.setBeepEnabled(false);
