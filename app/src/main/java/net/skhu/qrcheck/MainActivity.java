@@ -63,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
                     Intent intent = new Intent(MainActivity.this, UserActivity.class);
                     intent.putExtra("id", response.body().getId());
                     intent.putExtra("name", response.body().getName());
+                    intent.putExtra("stuNum", response.body().getStuNum());
 //                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 
                     startActivity(intent);

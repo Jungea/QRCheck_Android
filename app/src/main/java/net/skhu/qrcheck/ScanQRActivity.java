@@ -31,6 +31,7 @@ public class ScanQRActivity extends AppCompatActivity {
     Intent intent;
     int id;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,8 +48,12 @@ public class ScanQRActivity extends AppCompatActivity {
 
         intent = getIntent();
         id = intent.getIntExtra("id", 0);
+        String name = intent.getStringExtra("name");;
+        String stuNum = intent.getStringExtra("stuNum");
         intent = new Intent(this, UserActivity.class);
         intent.putExtra("id", id);
+        intent.putExtra("name", name);
+        intent.putExtra("stuNum", stuNum);
 
 
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);

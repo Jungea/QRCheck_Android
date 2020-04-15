@@ -26,6 +26,8 @@ public class UserActivity extends AppCompatActivity {
     public static Activity _UserActivity;
     RetrofitService retrofitService;
     int id;
+    String name;
+    String stuNum;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,22 +47,22 @@ public class UserActivity extends AppCompatActivity {
         retrofitService.init();
         retrofitService.retrofitAPI = retrofitService.retrofit.create(RetrofitAPI.class);
 
-        final TextView textView = findViewById(R.id.review);
 
         Intent intent = getIntent();
         id = intent.getIntExtra("id", 0);
-        String name = intent.getStringExtra("name");
+        name = intent.getStringExtra("name");
+        stuNum = intent.getStringExtra("stuNum");
+
+        TextView textView_Info = findViewById(R.id.userInfo);
+        textView_Info.setText(name+"\n("+stuNum+")");
 
         final TableLayout tableLayout = findViewById(R.id.tableLayout);
-
 
         Call<List<Att>> call = retrofitService.retrofitAPI.studentAttendances(id);
         call.enqueue(new Callback<List<Att>>() {
             @Override
             public void onResponse(Call<List<Att>> call, Response<List<Att>> response) {
                 List<Att> atts = response.body();
-                for (Att a : atts)
-                    textView.append(a.getName() + " " + a.getState() + "\n");
 
                 for (int i = 0; i < atts.size(); ++i) {
                     TableRow tableRow = new TableRow(UserActivity.this);
@@ -93,6 +95,8 @@ public class UserActivity extends AppCompatActivity {
     public void onQRClick(View view) {
         Intent intent = new Intent(this, ScanQRActivity.class);
         intent.putExtra("id", id);
+        intent.putExtra("name", name);
+        intent.putExtra("stuNum", stuNum);
         startActivity(intent);
     }
 }
