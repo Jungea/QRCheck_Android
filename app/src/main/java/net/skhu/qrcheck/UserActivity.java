@@ -5,7 +5,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.TableLayout;
+import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,6 +49,9 @@ public class UserActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         id = intent.getIntExtra("id", 0);
+        String name = intent.getStringExtra("name");
+
+        final TableLayout tableLayout = findViewById(R.id.tableLayout);
 
 
         Call<List<Att>> call = retrofitService.retrofitAPI.studentAttendances(id);
@@ -55,6 +61,25 @@ public class UserActivity extends AppCompatActivity {
                 List<Att> atts = response.body();
                 for (Att a : atts)
                     textView.append(a.getName() + " " + a.getState() + "\n");
+
+                for (int i = 0; i < atts.size(); ++i) {
+                    TableRow tableRow = new TableRow(UserActivity.this);
+                    tableRow.setLayoutParams(new TableLayout.LayoutParams(TableLayout.LayoutParams.WRAP_CONTENT, TableLayout.LayoutParams.WRAP_CONTENT));
+
+                    TextView text = new TextView(UserActivity.this);
+                    text.setText(atts.get(i).getName());
+                    text.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+                    tableRow.addView(text);
+
+                    for (int j = 0; j < 6; ++j) {
+                        text = new TextView(UserActivity.this);
+                        text.setText(atts.get(i).getState().get(j).toString());
+                        text.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.WRAP_CONTENT, TableRow.LayoutParams.WRAP_CONTENT));
+                        text.setGravity(Gravity.CENTER);
+                        tableRow.addView(text);
+                    }
+                    tableLayout.addView(tableRow);
+                }
             }
 
             @Override
