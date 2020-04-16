@@ -17,7 +17,7 @@ import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
-//    public Retrofit retrofit;
+    //    public Retrofit retrofit;
 //    public RetrofitAPI retrofitAPI;
 //    //    private final String BASE_URL = "http://10.0.2.2:8080";
 //    private final String BASE_URL = "http://192.168.0.163:8080";
@@ -58,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
             call.enqueue(new Callback<Student>() {
                 @Override
                 public void onResponse(Call<Student> call, Response<Student> response) {
-                    String msg = response.body().getName()+" "+response.body().getId();
+                    String msg = response.body().getName() + " " + response.body().getId();
 //                    Toast.makeText(MainActivity.this, "로그인 완료", Toast.LENGTH_LONG).show();
                     Intent intent = new Intent(MainActivity.this, UserActivity.class);
                     intent.putExtra("id", response.body().getId());
@@ -76,6 +76,23 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this, "로그인 정보가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
                 }
             });
+        }
+
+    }
+
+    private long backKeyPressedTime = 0;
+    private Toast toast;
+
+    @Override
+    public void onBackPressed() {
+
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            toast = Toast.makeText(this, "\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            finish();
+            toast.cancel();
         }
 
     }
