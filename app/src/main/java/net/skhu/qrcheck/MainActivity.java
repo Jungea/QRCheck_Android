@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity {
 //                    Toast.makeText(MainActivity.this, msg, Toast.LENGTH_LONG).show();
 
                     startActivity(intent);
+                    //액티비티 전환 애니메이션 설정하는 부분
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
                 }
 
                 @Override

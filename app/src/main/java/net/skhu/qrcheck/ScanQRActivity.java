@@ -48,7 +48,8 @@ public class ScanQRActivity extends AppCompatActivity {
 
         intent = getIntent();
         id = intent.getIntExtra("id", 0);
-        String name = intent.getStringExtra("name");;
+        String name = intent.getStringExtra("name");
+        ;
         String stuNum = intent.getStringExtra("stuNum");
         intent = new Intent(this, UserActivity.class);
         intent.putExtra("id", id);
@@ -56,7 +57,7 @@ public class ScanQRActivity extends AppCompatActivity {
         intent.putExtra("stuNum", stuNum);
 
         TextView textView_Info = findViewById(R.id.userInfo);
-        textView_Info.setText(name+"("+stuNum+")");
+        textView_Info.setText(name + "(" + stuNum + ")");
 
 
         IntentIntegrator intentIntegrator = new IntentIntegrator(this);
@@ -68,14 +69,14 @@ public class ScanQRActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         IntentResult result = IntentIntegrator.parseActivityResult(requestCode, resultCode, data);
+        final TextView scanResult = findViewById(R.id.scanResult);
         if (result != null) {
             if (result.getContents() == null) {
-                Toast.makeText(this, "스캐너 종료", Toast.LENGTH_LONG).show();
+                scanResult.setText("스캐너 종료");
             } else {
 
                 String[] split = result.getContents().split(" ");
 
-                final TextView scanResult = findViewById(R.id.scanResult);
 
                 Toast.makeText(ScanQRActivity.this, split[0] + " " + split[1] + " " + id, Toast.LENGTH_LONG).show();
 
@@ -85,17 +86,16 @@ public class ScanQRActivity extends AppCompatActivity {
                     call.enqueue(new Callback<Message>() {
                         @Override
                         public void onResponse(Call<Message> call, Response<Message> response) {
-                            Toast.makeText(ScanQRActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
                             scanResult.setText(response.body().getMessage());
                         }
 
                         @Override
                         public void onFailure(Call<Message> call, Throwable t) {
-                            Toast.makeText(ScanQRActivity.this, "정보받아오기 실패", Toast.LENGTH_SHORT).show();
+                            scanResult.setText("정보를 받아오지 못했습니다.");
                         }
                     });
 
-                } else if(split[0].equals("check")) {
+                } else if (split[0].equals("check")) {
                     Call<Message> call = retrofitService.retrofitAPI.checkQR(Integer.parseInt(split[1]), id);
 
                     call.enqueue(new Callback<Message>() {
@@ -107,13 +107,12 @@ public class ScanQRActivity extends AppCompatActivity {
 
                         @Override
                         public void onFailure(Call<Message> call, Throwable t) {
-                            Toast.makeText(ScanQRActivity.this, "정보받아오기 실패", Toast.LENGTH_SHORT).show();
+                            scanResult.setText("정보를 받아오지 못했습니다.");
                         }
                     });
 
-                }else{
-                    Toast.makeText(ScanQRActivity.this, "성공회대 출석체크 QR코드가 아닙니다.", Toast.LENGTH_SHORT).show();
-
+                } else {
+                    scanResult.setText("성공회대 출석체크 QR코드가 아닙니다.");
                 }
 
             }
@@ -124,5 +123,6 @@ public class ScanQRActivity extends AppCompatActivity {
 
     public void onOkClick(View view) {
         startActivity(intent);
+        overridePendingTransition(0, android.R.anim.slide_out_right);
     }
 }

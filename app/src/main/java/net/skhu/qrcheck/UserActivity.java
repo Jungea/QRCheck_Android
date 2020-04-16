@@ -54,7 +54,7 @@ public class UserActivity extends AppCompatActivity {
         stuNum = intent.getStringExtra("stuNum");
 
         TextView textView_Info = findViewById(R.id.userInfo);
-        textView_Info.setText(name+"\n("+stuNum+")");
+        textView_Info.setText(name + "\n(" + stuNum + ")");
 
         final TableLayout tableLayout = findViewById(R.id.tableLayout);
 
@@ -90,6 +90,17 @@ public class UserActivity extends AppCompatActivity {
             }
         });
 
+
+    }
+
+    public void onRefreshClick(View view) {
+        Intent intent = new Intent(this, UserActivity.class);
+        intent.putExtra("id", id);
+        intent.putExtra("name", name);
+        intent.putExtra("stuNum", stuNum);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        this.finish();
     }
 
     public void onQRClick(View view) {
@@ -98,5 +109,6 @@ public class UserActivity extends AppCompatActivity {
         intent.putExtra("name", name);
         intent.putExtra("stuNum", stuNum);
         startActivity(intent);
+        overridePendingTransition(android.R.anim.slide_out_right, android.R.anim.fade_out);
     }
 }
