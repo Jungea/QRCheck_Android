@@ -25,9 +25,25 @@ import retrofit2.Response;
 public class UserActivity extends AppCompatActivity {
     public static Activity _UserActivity;
     RetrofitService retrofitService;
+
     int id;
     String name;
     String stuNum;
+
+    private long backKeyPressedTime = 0;
+    private Toast toast;
+
+    @Override
+    public void onBackPressed() {
+        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
+            backKeyPressedTime = System.currentTimeMillis();
+            toast = Toast.makeText(this, "\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT);
+            toast.show();
+        } else {
+            finish();
+            toast.cancel();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,22 +109,6 @@ public class UserActivity extends AppCompatActivity {
 
     }
 
-    private long backKeyPressedTime = 0;
-    private Toast toast;
-
-    @Override
-    public void onBackPressed() {
-
-        if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
-            backKeyPressedTime = System.currentTimeMillis();
-            toast = Toast.makeText(this, "\'뒤로\'버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT);
-            toast.show();
-        } else {
-            finish();
-            toast.cancel();
-        }
-
-    }
 
     public void onRefreshClick(View view) {
         Intent intent = new Intent(this, UserActivity.class);

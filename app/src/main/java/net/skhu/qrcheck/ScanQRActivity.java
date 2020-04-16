@@ -77,9 +77,6 @@ public class ScanQRActivity extends AppCompatActivity {
 
                 String[] split = result.getContents().split(" ");
 
-
-                Toast.makeText(ScanQRActivity.this, split[0] + " " + split[1] + " " + id, Toast.LENGTH_LONG).show();
-
                 if (split[0].equals("late")) {
 
                     Call<Message> call = retrofitService.retrofitAPI.lateQR(Integer.parseInt(split[1]), id);
@@ -101,7 +98,6 @@ public class ScanQRActivity extends AppCompatActivity {
                     call.enqueue(new Callback<Message>() {
                         @Override
                         public void onResponse(Call<Message> call, Response<Message> response) {
-                            Toast.makeText(ScanQRActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
                             scanResult.setText(response.body().getMessage());
                         }
 
