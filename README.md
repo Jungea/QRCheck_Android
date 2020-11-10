@@ -14,3 +14,6 @@
 
 **학생ID 44** 아이디: 200132015  
 <img src="https://user-images.githubusercontent.com/33142199/79818708-6b488e80-83c3-11ea-90b5-95f5801cd075.jpg" alt="44 시간표" width="200px" height="300">
+
+---
+시연영상 https://youtu.be/30qy2W7MbPU
